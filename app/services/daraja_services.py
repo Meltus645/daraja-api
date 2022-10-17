@@ -14,6 +14,7 @@ def get_access_token()->str: # get access token from M-PESA
 
     try:
         access_token_response:requests.Response =requests.get(API_URL, auth=HTTPBasicAuth(CONSUMER_KEY, CONSUMER_SECRET)) 
+        print(access_token_response.text())
         response_json =access_token_response.json()  
         access_token =response_json['access_token']
         return access_token 
