@@ -9,25 +9,20 @@ from app.utils.constants import BASEDIR
 load_dotenv()
 def get_access_token()->str: # get access token from M-PESA
     CONSUMER_KEY:str =getenv('CONSUMER_KEY')
-    CONSUMER_SECRET:str =getenv('CONSUMER_KEY')
-    API_URL:str =getenv('API_URL')
-
-    try:
-        access_token_response:requests.Response =requests.get(API_URL, auth=HTTPBasicAuth(CONSUMER_KEY, CONSUMER_SECRET)) 
-        print(access_token_response.text())
-        response_json =access_token_response.json()  
-        access_token =response_json['access_token']
-        return access_token 
-    except Exception as e:
-        print(e)
-    return {}
+    CONSUMER_SECRET:str =getenv('CONSUMER_SECRET')
+    API_URL:str =getenv('API_URL') 
+    access_token_response:requests.Response =requests.get(API_URL, auth=HTTPBasicAuth(CONSUMER_KEY, CONSUMER_SECRET), headers={'Content-Type': 'application/json'}) 
+    response_json =access_token_response.json()
+    access_token =response_json['access_token']
+    return access_token 
+     
  
 def init_push():
     # phone number and amount 
     form =request.form
     phone =form.get('phone')
     amount =form.get('amount')
-    access_token:str =get_access_token()
+    access_token:str =get_access_token() 
     ENDPOINT =getenv('ENDPOINT') # stk push request endpoint
     BUSINESS_SHORTCODE =getenv('BUSINESS_SHORTCODE')
     headers ={"Authorization": f"Bearer {access_token}", "Content-Type": "application/json"}  # send access token in request headers
@@ -48,7 +43,7 @@ def init_push():
     }
     stk_push_request =requests.post(ENDPOINT, json=request_body, headers=headers)
     stk_push_json_response =stk_push_request.json()
-    return stk_push_json_response
+    return stk_push_json_response 
 
 def register(): 
     endpoint = 'https://sandbox.safaricom.co.ke/mpesa/c2b/v1/registerurl'
