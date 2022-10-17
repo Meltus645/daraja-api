@@ -14,14 +14,9 @@ def get_access_token()->str: # get access token from M-PESA
 
     try:
         access_token_response:requests.Response =requests.get(API_URL, auth=HTTPBasicAuth(CONSUMER_KEY, CONSUMER_SECRET)) 
-        # response_json =access_token_response.json() 
-        print(access_token_response)
-        print(access_token_response.text) 
-        # access_token =response_json['access_token']
-        # print(access_token)
-        # print(access_token)
-        # print(access_token)
-        # return access_token
+        response_json =access_token_response.json()  
+        access_token =response_json['access_token']
+        return access_token 
     except Exception as e:
         print(e)
     return {}
