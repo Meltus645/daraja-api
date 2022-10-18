@@ -1,5 +1,5 @@
 from os import getenv
-from flask import request, url_for
+from flask import request 
 import base64, requests
 from datetime import datetime
 from requests.auth import HTTPBasicAuth 
@@ -28,7 +28,7 @@ def init_push():
         BUSINESS_SHORTCODE =getenv('BUSINESS_SHORTCODE') # shortcode
         PASSKEY =getenv('PASSKEY') # pass key
         headers ={"Authorization": f"Bearer {access_token}", "Content-Type": "application/json"}  # send access token in request headers
-        timestamp = datetime.now().strftime("%Y%m%d%H%M%S") # timestamp
+        timestamp = datetime.now().strftime("%Y%m%d%H%M%S") # timestamp yyyymmddhhMMss
         password = f"{BUSINESS_SHORTCODE}{PASSKEY}{timestamp}"  # generate passwoerd from shortcode, passkey and timestamp
        
         # stk push request body and parameters
@@ -41,7 +41,7 @@ def init_push():
             "PartyA": phone,
             "PartyB": BUSINESS_SHORTCODE,
             "PhoneNumber": phone,
-            "CallBackURL": 'https://daraja-api-flask.herokuapp.com/daraja/callback',
+            "CallBackURL": 'https://daraja-api-flask.herokuapp.com/daraja/callback', # TODO: change me
             "AccountReference": "SAFETY4YOU",
             "TransactionDesc": "registration"
         }
