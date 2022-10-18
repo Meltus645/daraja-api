@@ -25,9 +25,10 @@ def init_push():
     access_token:str =get_access_token() 
     ENDPOINT =getenv('ENDPOINT') # stk push request endpoint
     BUSINESS_SHORTCODE =getenv('BUSINESS_SHORTCODE')
+    PASSKEY =getenv('PASSKEY')
     headers ={"Authorization": f"Bearer {access_token}", "Content-Type": "application/json"}  # send access token in request headers
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S") 
-    password = f"{174379}MTc0Mzc5YmZiMjc5ZjlhYTliZGJjZjE1OGU5N2RkNzFhNDY3Y2QyZTBjODkzMDU5YjEwZjc4ZTZiNzJhZGExZWQyYzkxOTIwMjIwOTIzMTI0NjA1{timestamp}" 
+    password = f"{174379}{PASSKEY}{timestamp}" 
     request_body = {
         "BusinessShortCode": BUSINESS_SHORTCODE,
         "Password": base64.b64encode(password.encode()).decode(),
@@ -37,7 +38,7 @@ def init_push():
         "PartyA": phone,
         "PartyB": BUSINESS_SHORTCODE,
         "PhoneNumber": phone,
-        "CallBackURL": url_for('daraja.callback'),
+        "CallBackURL": 'https://daraja-api-flask.herokuapp.com/daraja/callback',
         "AccountReference": "SAFETY4YOU",
         "TransactionDesc": "registration"
     }
@@ -61,10 +62,11 @@ def register():
     return response.json()
 
 def callback():
-    data =request.get_json()
-    try:
-        with open(BASEDIR /'data.json', 'a') as data_file: data_file.write(data)
-        response ={'message': 'data saved successfully'}
-    except Exception as e: response ={'detail': f'error saving data {e}'}
-    finally: return response  
+    return {}
+    # data =request.get_json()
+    # try:
+    #     with open(BASEDIR /'data.json', 'a') as data_file: data_file.write(data)
+    #     response ={'message': 'data saved successfully'}
+    # except Exception as e: response ={'detail': f'error saving data {e}'}
+    # finally: return response  
 
