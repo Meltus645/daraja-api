@@ -56,27 +56,19 @@ def init_push():
             'success': False,
             'detail': 'Failed please try again'
         }
-
-def register(): 
-    endpoint = 'https://sandbox.safaricom.co.ke/mpesa/c2b/v1/registerurl'
-    access_token = get_access_token()
-    my_endpoint ="c2b/"
-    headers = { "Authorization": "Bearer %s" % access_token }
-    r_data = {
-        "ShortCode": "600383",
-        "ResponseType": "Completed",
-        "ConfirmationURL": my_endpoint + 'con',
-        "ValidationURL": my_endpoint + 'val'
-    }
-
-    response = requests.post(endpoint, json=r_data, headers=headers)
-    return response.json()
+ 
 
 def callback(): 
     data =request.get_json()
     try:
         with open(BASEDIR /'data.json', 'a') as data_file: data_file.write(data)
-        response ={'message': 'data saved successfully'}
-    except Exception as e: response ={'detail': f'error saving data {e}'}
+        response ={
+            'success': True,
+            'message': 'data saved successfully'
+        }
+    except Exception as e: response ={
+        'success': False,
+        'detail': f'error saving data {e}'
+    }
     finally: return response  
 
